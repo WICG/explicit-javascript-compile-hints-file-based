@@ -95,11 +95,11 @@ Web developers should consider using explicit compile hints for files that conta
 
 ### Possible browser implementations
 
-Different browsers might handle the magic comment differently, based on what makes the most sense given their design and the available resources.
+Different browsers may handle the magic comment differently, based on their design and available resources.
 
 The following examples describe possible and valid actions when encountering a file with the magic comment:
 
-Implementation 1: Background-parse the JavaScript file while downloading it. Kick off background compilation tasks for all the functions (possibly up to a quota).
+Implementation 1: Background-parse the JavaScript file while downloading it. Mark all functions for compilation, potentially by separate background compilation tasks (possibly up to a quota).
 
 Implementation 2: Parse the JavaScript file and compile all functions eagerly on the main thread (possibly up to a quota).
 
