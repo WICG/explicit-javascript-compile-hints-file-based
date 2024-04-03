@@ -43,21 +43,35 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 
 This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript file are likely to be needed by the web page. This allows the browser to parse and compile the correct set of JavaScript functions, which can improve page load times.
 
+### On JavaScript parsing and compilation
+
+Knowing which JavaScript functions to parse & compile during the initial script compilation can speed up web page loading.
+
+When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right then (potentially on a background thread), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it right then - and that always happens in the main thread.
+
+If the function ends up being called, doing the parsing & compile work upfront is beneficial, because:
+- During the initial parsing, we anyway need to do at least a lightweight parse to find the function end. In JavaScript, finding the function end requires parsing the full syntax (there are no shortcuts where we could count the curly braces - the grammar is too complex for them to work).
+- The initial parse might happen on a background thread instead of the main thread. When we need to compile the function because it's being called, it's too late to parallelize work.
+
+Based on initial experiments, Google Docs report 5-7% improvement in their userland page load metrics with our prototype implementation, when selecting the core JS file for eager compilation.
+
+Currently, Chromium and Firefox use the [PIFE heuristic](https://v8.dev/blog/preparser#pife) to direct which functions to compile. This heuristic has existed for a long time and is well known to web developers. Safari doesn't follow the heuristic.
+
+Using PIFEs for transmitting information about which functions should be eager-compiled has downsides, though. Especially:
+- using it forces using function expressions instead of function declarations. The semantics of function expressions mandate doing the assignment, so they're generally less performant than function declarations. For browsers which don't follow the PIFE hint there's no upside
+- it cannot be applied to ES6 class methods
+
+Thus, we'd like to specify a  more elegant way for triggering eager compilation.
+
 ## Goals
 
 The goal of this proposal is to improve intial web page load speed and reduce interaction delays.
-
-## Non-goals
-
-[If there are "adjacent" goals which may appear to be in scope but aren't,
-enumerate them here. This section may be fleshed out as your design progresses and you encounter necessary technical and other trade-offs.]
 
 ## Use cases
 
 When users access web pages, they often experience delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, developers can indicate which JavaScript files are crucial for rendering the initial page. This enables browsers to prioritize parsing and compiling the functions in these files ahead of time, potentially resulting in significantly faster page load times.
 
-
-## Potential Solution: Magic comment in JavaScript files
+## Potential solution: Magic comment in JavaScript files
 
 Explicit compile hints are triggered by inserting the following magic comment into JavaScript files:
 
@@ -116,6 +130,19 @@ in which case you should link to any active discussion threads.]
 
 ## Considered alternatives
 
+### Alternative: Top-level magic comment with per-function data as payload
+
+Example:
+```JavaScript
+//# eagerCompilationData=<payload>
+```
+
+The payload would describe the function positions of the functions to be eagerly compiled. Designing a suitable payload format is non-trivial.
+
+We'd also need to make sure that web development toolchains can generate the per-function data and incorporate it in an automatic fashion. Here, we suggest a profile-guided optimization (PGO) approach: first running the web page and logging which functions were called, and generating the per-function annotation based on the data. This area needs more experimentation.
+
+We'd like to keep this alternative as a future extension, and propose the per-file magic comment solution first.
+
 ### Alternative: Top-level "use eager" directive and per-function "use eager" directive
 
 Example / top level "use eager" directive:
@@ -146,9 +173,9 @@ We'd like to propose a solution which we can later extend with per-function info
 
 Example:
 ```
-/*compile-hint*/ function foo() { ... }
+/*eagerCompilation*/ function foo() { ... }
 class C {
-  /*compile-hint*/ m() { ... }
+  /*eagerCompilation*/ m() { ... }
 }
 ```
 
@@ -160,22 +187,26 @@ We could also add compile hint data (either the per-file version, or per-functio
 
 Example / per-file compile hint in script tag:
 ```
-<script src="..." compile-hint>
+<script src="..." eager-compilation>
 ```
 
 Example / per-function compile hint data in script tag:
 ```
-<script src="..." compile-hint-data="...">
+<script src="..." eager-compilation-data="<payload>">
+```
+
+Example / per-function compile hint data in script tag:
+```
+<script src="..." eager-compilation-data-file="metadata-filepath">
 ```
 
 Downsides:
-- This alternative separates the source code and the compile hint, making it harder to keep the compile hint up to date, and requiring more modifications /either to the HTML page or the parts of the pipeline generating or serving the HTML page) to transmit the compile hint.
+- These alternatives separate the source code and the compile hints, making it harder to keep the compile hints up to date. They also require more modifications either to the HTML page or the parts of the pipeline generating or serving the HTML page to transmit the compile hint.
 - Files loaded via other means than adding a script tag would require a separate solution.
 
 ### Alternative: compile hint data in a HTTP header
 
-We could also transmit compile hint data in a HTTP header. This alternative also has the same downside than the previous solution; it would require more extensive modifications to the web server, not only the JavaScript source file.
-
+We could also transmit compile hint data in a HTTP header. This alternative also has the same downside than the previous solution; it would require modifying the web servers, not only the JavaScript source files.
 
 ## Stakeholder Feedback / Opposition
 
@@ -188,6 +219,9 @@ Initially, the feature will probably be implemented only by Chromium, but it is 
 - [Implementor C] : Negative
 
 [If appropriate, explain the reasons given by other implementors for their concerns.]
+
+Concerns brought up by other browser implementors:
+- Web developers might overuse this feature, selecting too many JavaScript files for eager compilation.
 
 ## References & acknowledgements
 
