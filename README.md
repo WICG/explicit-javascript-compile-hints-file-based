@@ -62,40 +62,48 @@ discuss the process and findings. User research should be more common than it is
 
 ## Use cases
 
-[Describe in detail what problems end-users are facing, which this project is trying to solve. A
-common mistake in this section is to take a web developer's or server operator's perspective, which
-makes reviewers worry that the proposal will violate [RFC 8890, The Internet is for End
-Users](https://www.rfc-editor.org/rfc/rfc8890).]
-
-### Use case 1
-
-### Use case 2
+When users access web pages, they often experience delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, developers can indicate which JavaScript files are crucial for rendering the initial page. This enables browsers to prioritize parsing and compiling the functions in these files ahead of time, potentially resulting in significantly faster page load times.
 
 <!-- In your initial explainer, you shouldn't be attached or appear attached to any of the potential
 solutions you describe below this. -->
 
 ## [Potential Solution]
 
-[For each related element of the proposed solution - be it an additional JS method, a new object, a new element, a new concept etc., create a section which briefly describes it.]
+### [Magic comment in JavaScript files]
 
-```js
-// Provide example code - not IDL - demonstrating the design of the feature.
+Explicit compile hints are triggered by inserting the following magic comment into JavaScript files:
 
-// If this API can be used on its own to address a user need,
-// link it back to one of the scenarios in the goals section.
-
-// If you need to show how to get the feature set up
-// (initialized, or using permissions, etc.), include that too.
+```JavaScript
+//# eagerCompilation=all
 ```
 
-[Where necessary, provide links to longer explanations of the relevant pre-existing concepts and API.
-If there is no suitable external documentation, you might like to provide supplementary information as an appendix in this document, and provide an internal link where appropriate.]
+The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority", e.g., compile them upfront.
 
-[If this is already specced, link to the relevant section of the spec.]
+The magic comment doesn't change the semantics of the JavaScript file. The browser is allowed to ignore the hint.
 
-[If spec work is in progress, link to the PR or draft of the spec.]
+The format for the magic comment is similar to the [Source Map magic comment](https://sourcemaps.info/spec.html).
 
-[If you have more potential solutions in mind, add ## Potential Solution 2, 3, etc. sections.]
+The magic comment can appear anywhere in a JavaScript file, in any syntactic position where a comment can appear. The comment is intended to affect only JavaScript functions which occur after it.
+
+Web developers should consider using explicit compile hints for files that contain important functions that are likely to be needed by the web page early on. For example, they might use explicit compile hints for a file that contains the main entry point for your application, or for a file that contains a critical library.
+
+### [Possible browser implementations]
+
+Different browsers might handle the magic comment differently, based on what makes the most sense given their design and the available resources.
+
+The following examples describe possible and valid actions when encountering a file with the magic comment:
+
+Implementation 1: Background-parse the JavaScript file while downloading it. Kick off background compilation tasks for all the functions (possibly up to a quota).
+
+Implementation 2: Parse the JavaScript file and compile all functions eagerly on the main thread (possibly up to a quota).
+
+Implementation 3: Ignore the hint when initially compiling the file. When a code cache for the file is created (e.g., when a user visits the same web page often enough that cache creation is deemed useful), create a code cache containing all the functions in the file.
+
+Implementation 4: Like Implementation 1/2 but compile the functions with a higher tier compiler right away.
+
+Implementation 5: Ignore the hint.
+
+Chromium is currently experimenting with the feature (options 1 and 3). 
 
 ### How this solution would solve the use cases
 
@@ -132,8 +140,7 @@ in which case you should link to any active discussion threads.]
 
 ## Considered alternatives
 
-[This should include as many alternatives as you can,
-from high level architectural decisions down to alternative naming choices.]
+
 
 ### [Alternative 1]
 
@@ -145,6 +152,8 @@ and why you decided against it.]
 [etc.]
 
 ## Stakeholder Feedback / Opposition
+
+Initially, the feature will probably be implemented only by Chromium, but it is designed to be general-purpose, so that other browsers can implement it in the future.
 
 [Implementors and other stakeholders may already have publicly stated positions on this work. If you can, list them here with links to evidence as appropriate.]
 
