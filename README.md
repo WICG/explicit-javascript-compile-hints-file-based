@@ -11,7 +11,7 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 - https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
 - [Discussion forum] FIXME
 
-## Table of Contents [if the explainer is longer than one printed page] FIXME
+## Table of contents [if the explainer is longer than one printed page] FIXME
 
 <!-- Update this table of contents by running `npx doctoc README.md` -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -212,20 +212,24 @@ Downsides:
 
 We could also transmit compile hint data in a HTTP header. This alternative also has the same downside than the previous solution; it would require modifying the web servers, not only the JavaScript source files.
 
-## Stakeholder Feedback / Opposition
+## Risks and mitigations
+
+1. Web developers might overuse compile hints, making their web page slower. Browsers can try to mitigate that, e.g., by only increasing resource use (CPU for compiling the functions, memory for storing the compilation results) up to a quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
+
+1. Compile hints might get stale, if the web site is refactored. Likewise, this risk also exists with using the PIFE heuristic for triggering eager compilation.
+
+1. If multiple browsers implement this feature, it's possible that for a particular web site, only some of the browsers exhibit desirable behavior (performance improvements) and other browsers show a regression. There's no way for a web site to make the compile hints only apply to one browser.
+
+1. Removing this feature is easy; if a browser decides to no longer implement the feature, it will simply start ignoring the magic comment. All web sites will still function normally. If no browsers implement the feature, eventually web sites will drop the magic comment.
+
+## Stakeholder feedback / opposition
 
 Initially, the feature will probably be implemented only by Chromium, but it is designed to be general-purpose, so that other browsers can implement it in the future.
 
-[Implementors and other stakeholders may already have publicly stated positions on this work. If you can, list them here with links to evidence as appropriate.]
-
-- [Implementor A] : Positive
-- [Stakeholder B] : No signals
-- [Implementor C] : Negative
-
-[If appropriate, explain the reasons given by other implementors for their concerns.]
-
 Concerns brought up by other browser implementors:
 - Web developers might overuse this feature, selecting too many JavaScript files for eager compilation.
+- The optimal set of functions to eager compile might be different for different browsers.
+- Focus on warm loads: After the initial web page load, the browser might be in a better position to decide which functions should be eagerly compiled, than the web developers.
 
 ## References & acknowledgements
 
