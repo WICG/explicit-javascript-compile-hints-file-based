@@ -89,7 +89,7 @@ The format for the magic comment is similar to the [Source Map magic comment](ht
 
 The magic comment can appear anywhere in a JavaScript file, in any syntactic position where a comment can appear. The comment is intended to affect only JavaScript functions which occur after it.
 
-Web developers should consider using explicit compile hints for files that contain important functions that are likely to be needed by the web page early on. For example, they might use explicit compile hints for a file that contains the main entry point for your application, or for a file that contains a critical library.
+Web developers should consider using explicit compile hints for files that contain important functions that are likely to be needed by the web page early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
 
 ### Possible browser implementations
 
