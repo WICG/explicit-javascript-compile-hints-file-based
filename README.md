@@ -45,31 +45,19 @@ This proposal introduces a new magic comment that signals to browsers that the f
 
 ## Goals
 
-[What is the **end-user need** which this project aims to address? Make this section short, and
-elaborate in the Use cases section.]
-
-
+The goal of this proposal is to improve intial web page load speed and reduce interaction delays.
 
 ## Non-goals
 
 [If there are "adjacent" goals which may appear to be in scope but aren't,
 enumerate them here. This section may be fleshed out as your design progresses and you encounter necessary technical and other trade-offs.]
 
-## User research
-
-[If any user research has been conducted to inform your design choices,
-discuss the process and findings. User research should be more common than it is.]
-
 ## Use cases
 
 When users access web pages, they often experience delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, developers can indicate which JavaScript files are crucial for rendering the initial page. This enables browsers to prioritize parsing and compiling the functions in these files ahead of time, potentially resulting in significantly faster page load times.
 
-<!-- In your initial explainer, you shouldn't be attached or appear attached to any of the potential
-solutions you describe below this. -->
 
-## Potential Solution
-
-### Magic comment in JavaScript files
+## Potential Solution: Magic comment in JavaScript files
 
 Explicit compile hints are triggered by inserting the following magic comment into JavaScript files:
 
@@ -105,21 +93,9 @@ Implementation 5: Ignore the hint.
 
 Chromium is currently experimenting with the feature (options 1 and 3). 
 
-### How this solution would solve the use cases
+### How this solution would solve the use case
 
-[If there are a suite of interacting APIs, show how they work together to solve the use cases described.]
-
-#### Use case 1
-
-[Description of the end-user scenario]
-
-```js
-// Sample code demonstrating how to use these APIs to address that scenario.
-```
-
-#### Use case 2
-
-[etc.]
+The solution of explicit compile hints addresses the identified use cases by providing developers with a mechanism to prioritize the parsing and compilation of critical JavaScript functions, thereby expediting the initial page load. This results in smoother browsing experiences, especially on mobile devices with limited resources.
 
 ## Detailed design discussion
 
@@ -140,16 +116,66 @@ in which case you should link to any active discussion threads.]
 
 ## Considered alternatives
 
+### Alternative: Top-level "use eager" directive and per-function "use eager" directive
 
+Example / top level "use eager" directive:
+```
+"use eager"; // All functions in this file will be eager
 
-### [Alternative 1]
+function foo() { ... }
+function bar() { ... }
+class C {
+  m() { ... }
+}
+```
 
-[Describe an alternative which was considered,
-and why you decided against it.]
+Example / per function "use eager" directive:
 
-### [Alternative 2]
+```
+function foo() { "use eager"; ... }
+class C {
+  m() { "use eager"; ... }
+}
+```
 
-[etc.]
+The top-level "use eager" directive is very similar to the top level magic comment we're proposing. The downside is that the per-function "use eager" directive would bloat the source code size. This is unoptimal; although compression would alleviate the tramitted file size overhead, parsing the magic comments still adds overhead which we think is unnecessary.
+
+We'd like to propose a solution which we can later extend with per-function information in a lean way, and thus decided against this alternative.
+
+### Alternative: per-function magic comment
+
+Example:
+```
+/*compile-hint*/ function foo() { ... }
+class C {
+  /*compile-hint*/ m() { ... }
+}
+```
+
+Similarily to per-functon "use eager" directives, this would bloat the source code size and introduce unnecessary parsing overhead.
+
+### Alternative: compile hint data in the script tag
+
+We could also add compile hint data (either the per-file version, or per-function data) into the script tag:
+
+Example / per-file compile hint in script tag:
+```
+<script src="..." compile-hint>
+```
+
+Example / per-function compile hint data in script tag:
+```
+<script src="..." compile-hint-data="...">
+```
+
+Downsides:
+- This alternative separates the source code and the compile hint, making it harder to keep the compile hint up to date, and requiring more modifications /either to the HTML page or the parts of the pipeline generating or serving the HTML page) to transmit the compile hint.
+- Files loaded via other means than adding a script tag would require a separate solution.
+
+### Alternative: compile hint data in a HTTP header
+
+We could also transmit compile hint data in a HTTP header. This alternative also has the same downside than the previous solution; it would require more extensive modifications to the web server, not only the JavaScript source file.
+
 
 ## Stakeholder Feedback / Opposition
 
