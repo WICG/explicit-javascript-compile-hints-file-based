@@ -71,11 +71,11 @@ The goal of this proposal is to improve intial web page load speed and reduce in
 
 ## Use cases
 
-When users access web pages, they often experience delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, developers can indicate which JavaScript files are crucial for rendering the initial page. This enables browsers to prioritize parsing and compiling the functions in these files ahead of time, potentially resulting in significantly faster page load times.
+When users access web pages, they often encounter delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, web developers can indicate which JavaScript files are essential for rendering the initial page, thereby enabling browsers to prioritize parsing and compiling functions in these files. This prioritization can lead to significantly faster page load times.
 
 ## Potential solution: Magic comment in JavaScript files
 
-Explicit compile hints are triggered by inserting the following magic comment into JavaScript files:
+We propse adding the following magic comment to trigger eager compilation of all functions in the JavaScript file:
 
 ```JavaScript
 //# eagerCompilation=all
@@ -207,7 +207,7 @@ We could also transmit compile hint data in an HTTP header. This alternative als
 
 ## Risks and mitigations
 
-- Web developers might overuse compile hints, making their web page slower. Browsers can try to mitigate that, e.g., by only increasing resource use (CPU for compiling the functions, memory for storing the compilation results) up to a quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
+- Web developers might overuse compile hints, potentially slowing down their web pages. Browsers can mitigate this risk by limiting resource usage, such as CPU and memory, up to a certain quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
 
 - Compile hints might get stale, if the web site is refactored. Likewise, this risk also exists with using the PIFE heuristic for triggering eager compilation.
 
