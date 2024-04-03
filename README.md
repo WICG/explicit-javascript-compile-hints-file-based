@@ -233,12 +233,7 @@ Concerns brought up by other browser implementors:
 
 ## References & acknowledgements
 
-[Your design will change and be informed by many people; acknowledge them in an ongoing way! It helps build community and, as we only get by through the contributions of many, is only fair.]
-
-[Unless you have a specific reason not to, these should be in alphabetical order.]
-
 Many thanks for valuable feedback and advice from:
 
-- [Person 1]
-- [Person 2]
-- [etc.]
+- Shu-Yu Guo, Toon Verwaest and Leszek Swirski from the V8 team (Google)
+- Philip Weiss and Adam Giacobbe from Workspace (Google)
