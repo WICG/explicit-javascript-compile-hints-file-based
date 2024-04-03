@@ -201,9 +201,9 @@ Downsides:
 - These alternatives separate the source code and the compile hints, making it harder to keep the compile hints up to date. They also require more modifications either to the HTML page or the parts of the pipeline generating or serving the HTML page to transmit the compile hint.
 - Files loaded via other means than adding a script tag would require a separate solution.
 
-### Alternative: compile hint data in a HTTP header
+### Alternative: compile hint data in an HTTP header
 
-We could also transmit compile hint data in a HTTP header. This alternative also has the same downside than the previous solution; it would require modifying the web servers, not only the JavaScript source files.
+We could also transmit compile hint data in an HTTP header. This alternative also has the same downside than the previous solution; it would require modifying the web servers, not only the JavaScript source files.
 
 ## Risks and mitigations
 
