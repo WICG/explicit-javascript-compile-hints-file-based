@@ -47,7 +47,7 @@ This proposal introduces a new magic comment that signals to browsers that the f
 
 Knowing which JavaScript functions to parse & compile during the initial script compilation can speed up web page loading.
 
-When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that moment - and that always happens in the main thread.
+When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that moment. At that point, the main thread cannot proceed until the funcion is compiled.
 
 If a JavaScript function ends up being called during page load, doing the parsing & compile work upfront is beneficial, because:
 - During the initial parsing, we anyway need to do at least a lightweight parse to find the function end. In JavaScript, finding the function end requires parsing the full syntax (there are no shortcuts where we could count the curly braces - the grammar is too complex for them to work). Doing the lightweight parsing and after that the actual parsing is duplicate work.
@@ -71,7 +71,9 @@ The goal of this proposal is to improve intial web page load speed and reduce in
 
 ## Use cases
 
-When users access web pages, they often encounter delays as the browser parses and compiles necessary scripts. By utilizing explicit compile hints, web developers can indicate which JavaScript files are essential for rendering the initial page, thereby enabling browsers to prioritize parsing and compiling functions in these files. This prioritization can lead to significantly faster page load times.
+When users access web pages, they often encounter delays as the browser parses and compiles necessary scripts. Some of the delays are due to "lazy function compilation", where we haven't compiled a JavaScript function before it is called, and we need to compile it now.
+
+By utilizing explicit compile hints, web developers can indicate which JavaScript files are essential for rendering the initial page, thereby enabling browsers to prioritize parsing and compiling functions in these files. This prioritization can lead to faster page load times.
 
 ## Potential solution: Magic comment in JavaScript files
 
@@ -81,7 +83,7 @@ We propse adding the following magic comment to trigger eager compilation of all
 //# eagerCompilation=all
 ```
 
-The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority", e.g., compile them upfront.
+The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when the function is called.
 
 The magic comment doesn't change the semantics of the JavaScript file. The browser is allowed to ignore the hint.
 
