@@ -207,13 +207,13 @@ We could also transmit compile hint data in an HTTP header. This alternative als
 
 ## Risks and mitigations
 
-1. Web developers might overuse compile hints, making their web page slower. Browsers can try to mitigate that, e.g., by only increasing resource use (CPU for compiling the functions, memory for storing the compilation results) up to a quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
+- Web developers might overuse compile hints, making their web page slower. Browsers can try to mitigate that, e.g., by only increasing resource use (CPU for compiling the functions, memory for storing the compilation results) up to a quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
 
-1. Compile hints might get stale, if the web site is refactored. Likewise, this risk also exists with using the PIFE heuristic for triggering eager compilation.
+- Compile hints might get stale, if the web site is refactored. Likewise, this risk also exists with using the PIFE heuristic for triggering eager compilation.
 
-1. If multiple browsers implement this feature, it's possible that for a particular web site, only some of the browsers exhibit desirable behavior (performance improvements) and other browsers show a regression. There's no way for a web site to make the compile hints only apply to one browser.
+- If multiple browsers implement this feature, it's possible that for a particular web site, only some of the browsers exhibit desirable behavior (performance improvements) and other browsers show a regression. There's no way for a web site to make the compile hints only apply to one browser.
 
-1. Removing this feature is easy; if a browser decides to no longer implement the feature, it will simply start ignoring the magic comment. All web sites will still function normally. If no browsers implement the feature, eventually web sites will drop the magic comment.
+- Removing this feature is easy; if a browser decides to no longer implement the feature, it will simply start ignoring the magic comment. All web sites will still function normally. If no browsers implement the feature, eventually web sites will drop the magic comment.
 
 ## Stakeholder feedback / opposition
 
