@@ -55,7 +55,9 @@ If a JavaScript function ends up being called during page load, doing the parsin
 
 Based on initial experiments, Google Docs report 5-7% improvement in their userland page load metrics with our prototype implementation, when selecting the core JS file for eager compilation.
 
-Currently, Chromium and Firefox use the [PIFE heuristic](https://v8.dev/blog/preparser#pife) to direct which functions to compile. This heuristic has existed for a long time and is well known to web developers - some web pages (e.g., Facebook) use it or have used it for triggering eager compilation. Safari doesn't follow the heuristic.
+Currently, Chromium and Firefox use the [PIFE heuristic](https://v8.dev/blog/preparser#pife) to direct which functions to compile. Safari doesn't follow the heuristic.
+
+The PIFE heuristic has existed for a long time and is well known to web developers - some web pages (e.g., Facebook) use it or have used it for triggering eager compilation.
 
 Using PIFEs for triggering eager compilation has downsides, though. Especially:
 - using it forces using function expressions instead of function declarations. The semantics of function expressions mandate doing the assignment, so they're generally less performant than function declarations. For browsers which don't follow the PIFE hint there's no upside
