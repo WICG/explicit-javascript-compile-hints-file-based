@@ -235,5 +235,5 @@ Concerns brought up by other browser implementors:
 
 Many thanks for valuable feedback and advice from:
 
-- Shu-Yu Guo, Toon Verwaest and Leszek Swirski from the V8 team (Google)
+- Shu-Yu Guo, Toon Verwaest and Leszek Swirski from V8 (Google)
 - Philip Weiss and Adam Giacobbe from Workspace (Google)
