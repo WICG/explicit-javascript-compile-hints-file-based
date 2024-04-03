@@ -67,9 +67,9 @@ When users access web pages, they often experience delays as the browser parses 
 <!-- In your initial explainer, you shouldn't be attached or appear attached to any of the potential
 solutions you describe below this. -->
 
-## [Potential Solution]
+## Potential Solution
 
-### [Magic comment in JavaScript files]
+### Magic comment in JavaScript files
 
 Explicit compile hints are triggered by inserting the following magic comment into JavaScript files:
 
@@ -87,7 +87,7 @@ The magic comment can appear anywhere in a JavaScript file, in any syntactic pos
 
 Web developers should consider using explicit compile hints for files that contain important functions that are likely to be needed by the web page early on. For example, they might use explicit compile hints for a file that contains the main entry point for your application, or for a file that contains a critical library.
 
-### [Possible browser implementations]
+### Possible browser implementations
 
 Different browsers might handle the magic comment differently, based on what makes the most sense given their design and the available resources.
 
