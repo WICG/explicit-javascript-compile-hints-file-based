@@ -1,24 +1,18 @@
-# Explainer for the TODO API
+# Explainer for Explicit JavaScript Compile Hints
 
-**Instructions for the explainer author: Search for "todo" in this repository and update all the
-instances as appropriate. For the instances in `index.bs`, update the repository name, but you can
-leave the rest until you start the specification. Then delete the TODOs and this block of text.**
-
-This proposal is an early design sketch by [TODO: team] to describe the problem below and solicit
+This proposal is an early design sketch by the V8 team to describe the problem below and solicit
 feedback on the proposed solution. It has not been approved to ship in Chrome.
 
-TODO: Fill in the whole explainer template below using https://tag.w3.org/explainers/ as a
-reference. Look for [brackets].
 
-## Proponents
+## Proponents FIXME
 
 - [Proponent team 1]
 - [Proponent team 2]
 - [etc.]
 
 ## Participate
-- https://github.com/explainers-by-googlers/[your-repository-name]/issues
-- [Discussion forum]
+- https://github.com/explainers-by-googlers/explicit-javascript-compille-hints-file-based/issues
+- [Discussion forum] FIXME
 
 ## Table of Contents [if the explainer is longer than one printed page]
 
