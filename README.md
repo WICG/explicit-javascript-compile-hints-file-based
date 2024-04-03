@@ -3,18 +3,15 @@
 This proposal is an early design sketch by the V8 team to describe the problem below and solicit
 feedback on the proposed solution. It has not been approved to ship in Chrome.
 
+## Proponents
 
-## Proponents FIXME
-
-- [Proponent team 1]
-- [Proponent team 2]
-- [etc.]
+- V8 team / Google
 
 ## Participate
-- https://github.com/explainers-by-googlers/explicit-javascript-compille-hints-file-based/issues
+- https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
 - [Discussion forum] FIXME
 
-## Table of Contents [if the explainer is longer than one printed page]
+## Table of Contents [if the explainer is longer than one printed page] FIXME
 
 <!-- Update this table of contents by running `npx doctoc README.md` -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -44,15 +41,14 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 
 ## Introduction
 
-[The "executive summary" or "abstract".
-Explain in a few sentences what the goals of the project are,
-and a brief overview of how the solution works.
-This should be no more than 1-2 paragraphs.]
+This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript file are likely to be needed by the web page. This allows the browser to parse and compile the correct set of JavaScript functions, which can improve page load times.
 
 ## Goals
 
 [What is the **end-user need** which this project aims to address? Make this section short, and
 elaborate in the Use cases section.]
+
+
 
 ## Non-goals
 
