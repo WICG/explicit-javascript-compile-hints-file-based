@@ -240,7 +240,7 @@ Initially, the feature will probably be implemented only by Chromium, but it is 
 Concerns brought up by other browser implementors:
 - Web developers might overuse this feature, selecting too many JavaScript files for eager compilation.
 - The optimal set of functions to eager compile might be different for different browsers.
-- Focus on warm loads: After the initial web page load, the browser might be in a better position to decide which functions should be eagerly compiled, than the web developers.
+- Compile hints are only relevant for the "cold load" (the initial, non-cached load of a website). After the initial web page load, the browser might be in a better position to decide which functions should be eagerly compiled than the web developers.
 
 ## References & acknowledgements
 
