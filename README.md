@@ -213,6 +213,16 @@ Downsides:
 
 We could also transmit compile hint data in an HTTP header. This alternative also has the same downside as the previous solution; it would require modifying the web servers, not only the JavaScript source files.
 
+### Alternative: do nothing / recommend using the PIFE heuristic for triggering eager compilation
+
+The PIFE heuristic forces using assignment expressions instead of function declarations and cannot be added to ES6 class methods.
+
+### Alternative: do nothing / no solution for web developers to control eager compilation
+
+Even if we don't provide a way for web developers to control eager compilation, we can still observe which JavaScript functions were called and use that information for speeding up subsequent page loads of the same version of the website. However, this does not work optimally for the following types of websites:
+- Websites which update frequently  (e.g., daily); when a new version ships, the browser hasn't seen the new scripts yet and cannot make an optimal compilation decision for it.
+- Websites which generate the JavaScript files dynamically (e.g., decide which experiment groups are active for each page load individually). Those websites tend to create unique JavaScript files for every page load, and if compile hint information is not part of those files, we won't be able to infer the optimal compilation decision from outside sources.
+
 ## Risks and mitigations
 
 - Web developers might overuse compile hints, potentially slowing down their web sites. Browsers can mitigate this risk by limiting resource usage, such as CPU and memory, up to a certain quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
