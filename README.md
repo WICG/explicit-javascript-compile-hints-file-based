@@ -41,39 +41,45 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 
 ## Introduction
 
-This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript file are likely to be needed by the web page. This allows the browser to parse and compile the correct set of JavaScript functions, which can improve page load times.
+This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript file are likely to be needed by the website. This allows the browser to parse and compile them eagerly, which can improve page load times.
 
 ### On JavaScript parsing and compilation
 
 Knowing which JavaScript functions to parse & compile during the initial script compilation can speed up web page loading.
 
-When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that moment. At that point, the main thread cannot proceed until the funcion is compiled.
+When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that point. The main thread is waiting for the function to be called and cannot proceed until the funcion is compiled.
 
-If a JavaScript function ends up being called during page load, doing the parsing & compile work upfront is beneficial, because:
+If a JavaScript function ends up being called during page load, parsing and compiling eagerly is beneficial, because:
 - During the initial parsing, we anyway need to do at least a lightweight parse to find the function end. In JavaScript, finding the function end requires parsing the full syntax (there are no shortcuts where we could count the curly braces - the grammar is too complex for them to work). Doing the lightweight parsing and after that the actual parsing is duplicate work.
 - The initial parse might happen on a background thread instead of the main thread. When we need to compile the function because it's being called, it's too late to parallelize work.
 
-Based on initial experiments, Google Docs report 5-7% improvement in their userland page load metrics with our prototype implementation, when selecting the core JS file for eager compilation.
+Based on initial experiments, Google Workspace products (such as Google Docs) report 5-7% improvement in their userland page load metrics with our prototype implementation, when selecting the core JS file for eager compilation.
+
+### The PIFE heuristic
 
 Currently, Chromium and Firefox use the [PIFE heuristic](https://v8.dev/blog/preparser#pife) to direct which functions to compile. Safari doesn't follow the heuristic.
 
-The PIFE heuristic has existed for a long time and is well known to web developers - some web pages (e.g., Facebook) use it or have used it for triggering eager compilation.
+The PIFE heuristic has existed for a long time and is well known to web developers - some websites (e.g., Facebook) use it or have used it for triggering eager compilation.
 
 Using PIFEs for triggering eager compilation has downsides, though. Especially:
-- using it forces using function expressions instead of function declarations. The semantics of function expressions mandate doing the assignment, so they're generally less performant than function declarations. For browsers which don't follow the PIFE hint there's no upside
+- using it forces using function expressions instead of function declarations. The semantics of function expressions mandate doing the assignment, so they're generally less performant than function declarations. For browsers which don't follow the PIFE hint there's no upside.
 - it cannot be applied to ES6 class methods
 
 Thus, we'd like to specify a  more elegant way for triggering eager compilation.
 
 ## Goals
 
-The goal of this proposal is to improve intial web page load speed and reduce interaction delays.
+The goal of this proposal is to improve intial web page load speed and reduce interaction delays by allowing web developers to control which JavaScript functions are parsed and compiled eagerly.
 
 ## Use cases
 
-When users access web pages, they often encounter delays as the browser parses and compiles necessary scripts. Some of the delays are due to "lazy function compilation", where we haven't compiled a JavaScript function before it is called, and we need to compile it now.
+### Use case 1: loading websites
 
-By utilizing explicit compile hints, web developers can indicate which JavaScript files are essential for rendering the initial page, thereby enabling browsers to prioritize parsing and compiling functions in these files. This prioritization can lead to faster page load times.
+When users load websites, they often encounter delays as the browser parses and compiles necessary scripts. A part of the delays are due to "lazy function compilation", where we haven't compiled a JavaScript function before it is called, and we need to compile it now.
+
+### Use case 2: interaction
+
+When users interact with websites, there are delays in how quickly the website responds to the interaction. Likewise, a part of these delays are due to "lazy function compilation".
 
 ## Potential solution: Magic comment in JavaScript files
 
@@ -83,7 +89,7 @@ We propse adding the following magic comment to trigger eager compilation of all
 //# eagerCompilation=all
 ```
 
-The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when the function is called.
+The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when a function is called.
 
 The magic comment doesn't change the semantics of the JavaScript file. The browser is allowed to ignore the hint.
 
@@ -91,7 +97,7 @@ The format for the magic comment is similar to the [Source Map magic comment](ht
 
 The magic comment can appear anywhere in a JavaScript file, in any syntactic position where a comment can appear. The comment is intended to affect only JavaScript functions which occur after it.
 
-Web developers should consider using explicit compile hints for files that contain important functions that are likely to be needed by the web page early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
+Web developers should consider using explicit compile hints for files that contain important functions which are likely to be needed by the website early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
 
 ### Possible browser implementations
 
@@ -103,7 +109,7 @@ Implementation 1: Background-parse the JavaScript file while downloading it. Mar
 
 Implementation 2: Parse the JavaScript file and compile all functions eagerly on the main thread (possibly up to a quota).
 
-Implementation 3: Ignore the hint when initially compiling the file. When a code cache for the file is created (e.g., when a user visits the same web page often enough that cache creation is deemed useful), create a code cache containing all the functions in the file.
+Implementation 3: Ignore the hint when initially compiling the file. When a code cache for the file is created (e.g., when a user visits the same website often enough that cache creation is deemed useful), create a code cache containing all the functions in the file.
 
 Implementation 4: Like Implementation 1/2 but compile the functions with a higher tier compiler right away.
 
@@ -111,17 +117,17 @@ Implementation 5: Ignore the hint.
 
 Chromium is currently experimenting with the feature (options 1 and 3). 
 
-### How this solution would solve the use case
+### How this solution would solve the use cases
 
-The solution of explicit compile hints addresses the identified use cases by providing developers with a mechanism to prioritize the parsing and compilation of critical JavaScript functions, thereby expediting the initial page load. This results in smoother browsing experiences, especially on mobile devices with limited resources.
+The solution of explicit compile hints addresses the identified use cases by providing developers with a mechanism to prioritize the parsing and compilation of critical JavaScript functions, thereby speeding up the initial page load. This results in smoother browsing experiences, especially on mobile devices with limited resources.
 
 ## Detailed design discussion
 
 ### Per-file or per-function?
 
-If compile hints apply to the full file, web developers can manually select a "core file" of their web page for eager compilation. Selecting individual functions for eager compilation would need to be done in an automatic fashion - modern pages have tens of thousands of JavaScript functions, and improving the page load time requires selecting thoudands of them for eager compilation.
+If compile hints apply to the full file, web developers can manually select a "core file" of their website for eager compilation. Selecting individual functions for eager compilation would need to be done in an automatic fashion - modern websites have tens of thousands of JavaScript functions, and improving the page load time requires selecting thoudands of them for eager compilation.
 
-Selecting a whole file for eager compilation might overshoot: if some functions are not needed, compiling them takes CPU time, and storing the compiled code takes up memory (although, unused code can eventually be garbage collected).
+Selecting a whole file for eager compilation might overshoot: if some functions are not needed, compiling them takes CPU time, and storing the compiled code takes up memory (although, unused code may eventually be garbage collected).
 
 In this proposal, we're proposing a magic comment for marking the whole file for eager compilation. We'd like to make it easy to extend the feature to be able to mark individual functions in the future.
 
@@ -136,7 +142,7 @@ Example:
 
 The payload would describe the function positions of the functions to be eagerly compiled. Designing a suitable payload format is non-trivial.
 
-We'd also need to make sure that web development toolchains can generate the per-function data and incorporate it in an automatic fashion. For finding the functions, we suggest a profile-guided optimization (PGO) approach: first running the web page and logging which functions were called, and generating the per-function annotation based on the data. This area needs more experimentation.
+We'd also need to make sure that web development toolchains can generate the per-function data and incorporate it in an automatic fashion. For finding the functions, we suggest a profile-guided optimization (PGO) approach: launching a web server, loading the website and logging which functions were called, and generating the per-function annotation based on the data. This area needs more experimentation.
 
 We'd like to keep this alternative as a future extension, and propose the per-file magic comment solution first.
 
@@ -205,17 +211,17 @@ Downsides:
 
 ### Alternative: compile hint data in an HTTP header
 
-We could also transmit compile hint data in an HTTP header. This alternative also has the same downside than the previous solution; it would require modifying the web servers, not only the JavaScript source files.
+We could also transmit compile hint data in an HTTP header. This alternative also has the same downside as the previous solution; it would require modifying the web servers, not only the JavaScript source files.
 
 ## Risks and mitigations
 
-- Web developers might overuse compile hints, potentially slowing down their web pages. Browsers can mitigate this risk by limiting resource usage, such as CPU and memory, up to a certain quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
+- Web developers might overuse compile hints, potentially slowing down their web sites. Browsers can mitigate this risk by limiting resource usage, such as CPU and memory, up to a certain quota. This risk also exists with using the PIFE heuristic for triggering eager compilation, and browsers following the PIFE heuristic don't try to mitigate it.
 
 - Compile hints might get stale, if the web site is refactored. Likewise, this risk also exists with using the PIFE heuristic for triggering eager compilation.
 
 - If multiple browsers implement this feature, it's possible that for a particular web site, only some of the browsers exhibit desirable behavior (performance improvements) and other browsers show a regression. There's no way for a web site to make the compile hints only apply to one browser.
 
-- Removing this feature is easy; if a browser decides to no longer implement the feature, it will simply start ignoring the magic comment. All web sites will still function normally. If no browsers implement the feature, eventually web sites will drop the magic comment.
+- Removing this feature is easy; if a browser decides to no longer implement the feature, it will simply start ignoring the magic comment. All web site will still function normally. If no browsers implement the feature, eventually web sites will drop the magic comment.
 
 ## Stakeholder feedback / opposition
 
