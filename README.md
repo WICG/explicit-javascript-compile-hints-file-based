@@ -9,7 +9,6 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 
 ## Participate
 - https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
-- [Discussion forum] FIXME
 
 ## Table of contents
 
