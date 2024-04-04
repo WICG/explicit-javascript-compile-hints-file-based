@@ -11,7 +11,7 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 - https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
 - [Discussion forum] FIXME
 
-## Table of contents [if the explainer is longer than one printed page] FIXME
+## Table of contents
 
 <!-- Update this table of contents by running `npx doctoc README.md` -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
