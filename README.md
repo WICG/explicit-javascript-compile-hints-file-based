@@ -241,8 +241,8 @@ Even if we don't provide a way for web developers to control eager compilation, 
 Initially, the feature will probably be implemented only by Chromium, but it is designed to be general-purpose, so that other browsers can implement it in the future.
 
 Concerns brought up by other browser implementors:
-- Web developers might overuse this feature, selecting too many JavaScript files for eager compilation.
-- The optimal set of functions to eager compile might be different for different browsers.
+- Web developers might overuse this feature, selecting too many JavaScript files (or functions, in the future per-function version) for eager compilation.
+- The optimal set of files / functions to eager compile might be different for different browsers.
 - Compile hints are only relevant for the "cold load" (the initial, non-cached load of a website). After the initial web page load, the browser might be in a better position to decide which functions should be eagerly compiled than the web developers.
 
 ## References & acknowledgements
