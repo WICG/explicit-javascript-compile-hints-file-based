@@ -48,13 +48,13 @@ This proposal introduces a new magic comment that signals to browsers that the f
 
 ### On JavaScript parsing and compilation
 
-Knowing which JavaScript functions to parse & compile during the initial script compilation can speed up web page loading.
+Knowing which JavaScript functions to parse and compile during the initial script compilation can speed up web page loading.
 
-When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that point. The main thread is waiting for the function to be called and cannot proceed until the funcion is compiled.
+When processing a script we are loading from the network, we have a choice for each function; either we parse and compile it right away ("eagerly"), or we don't. If the function is later called and it was not compiled yet, we need to parse and compile it at that point. The main thread is waiting for the function to be called and cannot proceed until the function is compiled.
 
 If a JavaScript function ends up being called during page load, parsing and compiling eagerly is beneficial, because:
 - During the initial parsing, we anyway need to do at least a lightweight parse to find the function end. In JavaScript, finding the function end requires parsing the full syntax (there are no shortcuts where we could count the curly braces - the grammar is too complex for them to work). Doing the lightweight parsing and after that the actual parsing is duplicate work.
-- The initial parse might happen on a background thread instead of the main thread. When we need to compile the function because it's being called, it's too late to parallelize work.
+- The eager parsing might happen on a background thread instead of the main thread. When we need to compile the function because it's being called, it's too late to parallelize work.
 
 Based on initial experiments, Google Workspace products (such as Google Docs) report 5-7% improvement in their userland page load metrics with our prototype implementation, when selecting the core JS file for eager compilation.
 
