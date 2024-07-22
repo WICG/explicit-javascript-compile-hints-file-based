@@ -1,9 +1,9 @@
 <pre class='metadata'>
-Title: The TODO API
+Title: Explicit JavaScript Compile Hints (file-based)
 Shortname: todo
 Level: None
 Status: w3c/UD
-Repository: explainers-by-googlers/todo-your-repo-name
+Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
 URL: https://explainers-by-googlers.github.io/todo-your-repo-name
 Editor: TODO: Your Name, Google https://google.com, TODO@google.com
 Abstract: TODO: A short description of your spec, one or two sentences.
