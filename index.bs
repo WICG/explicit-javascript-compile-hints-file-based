@@ -20,6 +20,8 @@ Include Can I Use Panels: yes
 Introduction {#intro}
 =====================
 
+FIXME: write intro
+
 Extracting Compile Hint Annotations from JavaScript source text {#extract}
 ==========================================================================
 
@@ -59,6 +61,4 @@ To match a Compile Hint Annotation in a comment `comment` (a string), run the fo
 2. Let match be ! RegExpBuiltinExec(pattern, comment).
 3. Is match is not null, return match.
 4. Return null.
-
-
 
