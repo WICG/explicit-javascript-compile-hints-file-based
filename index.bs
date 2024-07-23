@@ -5,8 +5,8 @@ Level: None
 Status: w3c/UD
 Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
 URL: https://explainers-by-googlers.github.io/todo-your-repo-name
-Editor: Marja Hölttä, Google https://google.com, marja@google.com
-Abstract: TODO: A short description of your spec, one or two sentences.
+Editor: Marja Hölttä, Google, https://google.com, marja@google.com
+Abstract: FIXME: A short description of your spec, one or two sentences.
 Markup Shorthands: markdown yes, css no
 Complain About: accidental-2119 yes, missing-example-ids yes
 Assume Explicit For: yes
