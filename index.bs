@@ -1,12 +1,12 @@
 <pre class='metadata'>
 Title: Explicit JavaScript Compile Hints (File-based)
-Shortname: todo
+Shortname: explicit-js-compile-hints
 Level: None
-Status: w3c/UD
+Status: UD
 Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
-URL: https://explainers-by-googlers.github.io/todo-your-repo-name
+URL: https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/
 Editor: Marja Hölttä, Google, https://google.com, marja@google.com
-Abstract: FIXME: A short description of your spec, one or two sentences.
+Abstract: A magic comment in JavaScript for signaling certain scripts / functions should be prioritized
 Markup Shorthands: markdown yes, css no
 Complain About: accidental-2119 yes, missing-example-ids yes
 Assume Explicit For: yes
@@ -15,12 +15,34 @@ WPT Path Prefix: TODO-API-LABEL
 WPT Display: closed
 Include MDN Panels: if possible
 Include Can I Use Panels: yes
+Boilerplate: omit conformance
 </pre>
 
 Introduction {#intro}
 =====================
 
-FIXME: write intro
+This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript script are likely to be needed by the website. This allows the browser to parse, compile and/or cache them eagerly, which can improve page load times.
+
+In its current form, it’s not a defined standard and is subject to modifications.
+
+Additions to Script Records and Source Text Module Records {#additions}
+=======================================================================
+
+The [Script Record](https://tc39.es/ecma262/#sec-script-records) and [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records) are augmented to contain the following field:
+
+<table border="1">
+    <tr>
+        <td>Field name</td>
+        <td>Value type</td>
+        <td>Meaning</td>
+    </tr>
+    <tr>
+        <td>\[\[CompileHintAnnotation]]</td>
+        <td>anything (default value is EMPTY)</td>
+        <td>Contains information about the Compile Hint Annotation associated with the script / module.</td>
+    </tr>
+</table>
+
 
 Extracting Compile Hint Annotations from JavaScript source text {#extract}
 ==========================================================================
@@ -41,8 +63,8 @@ This section explains how the user agent may determine whether a JavaScript sour
 
 To check whether a JavaScript source string `source` contains the Compile Hint Annotation, run the following steps:
 
-1 If extracting a Compile Hint Annotation from `source` returns the string "all", return true.
-3 Return false.
+1. If extracting a Compile Hint Annotation from `source` returns the string "all", return true.
+2. Return false.
 
 To extract a Compile Hint Annotation from a JavaScript source string `source`, run the following steps:
 
@@ -59,5 +81,18 @@ To match a Compile Hint Annotation in a comment `comment` (a string), run the fo
 3. Is match is not null, return match.
 4. Return null.
 
+Using the \[\[CompileHintAnnotation]] internal field {#using}
+=============================================================
 
+This non-normative section describes how the user agent may use the Compile Hint Annotation.
+
+If a script or module record contains the \[\[CompileHintAnnotation]] internal field, the user agent may prioritize parsing and compiling the script and the functions within.
+
+<p class="example" id="might-compile-eagerly">The user agent might compile the functions earlier than it otherwise would.</p>
+
+<p class="example" id="might-compile-higher-tier">Example: The user agent might compile the functions in the script with a higher tier compiler than it otherwise would.</p>
+
+<p class="example" id="might-cache-eagerly">Example: The user agent might cache the compilation results more eagerly than it otherwise would.</p>
+
+The user agent may also completely ignore the \[\[CompileHintAnnotation]] internal field.
 
