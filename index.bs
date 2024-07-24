@@ -70,9 +70,9 @@ To extract a Compile Hint Annotation from a JavaScript source string `source`, r
 
 1. Let tokens be the list of tokens obtained from parsing source according to [!ECMASCRIPT].
 2. For each token in tokens:
-  1. If token is not a single-line comment or a multi-line comment, continue.
-  2. Let comment be the content of token.
-  3. If matching a compile hints annotation in comment returns a string, return it.
+    1. If token is not a single-line comment or a multi-line comment, continue.
+    2. Let comment be the content of token.
+    3. If matching a compile hints annotation in comment returns a string, return it.
 4. Return null.
 
 To match a Compile Hint Annotation in a comment `comment` (a string), run the following steps:
