@@ -2,7 +2,7 @@
 Title: Explicit JavaScript Compile Hints (File-based)
 Shortname: explicit-js-compile-hints
 Level: None
-Status: w3c/UD
+Status: LD
 Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
 URL: https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/
 Editor: Marja Hölttä, Google, https://google.com, marja@google.com
