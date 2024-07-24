@@ -25,31 +25,30 @@ FIXME: write intro
 Extracting Compile Hint Annotations from JavaScript source text {#extract}
 ==========================================================================
 
-This section explains how the user agent may determine whether a JavaScript source text contains the Compile Hint Annotation and store the information in [ECMASCRIPT] function objects.
+This section explains how the user agent may determine whether a JavaScript source text contains the Compile Hint Annotation and store the information in [[!ECMASCRIPT]] Script Records and Source Text Module Records.
 
 [ParseScript](https://tc39.es/ecma262/#sec-parse-script) is modified as follows:
 
-3.  Let compileHintAnnotation be `true`if `sourceText` contains the Compile Hint Annotation, `false`otherwise.
-4. If compileHintAnnotation is `true`,
-  a Return Script Record { [[Realm]]: realm, [[ECMAScriptCode]]: script, [[LoadedModules]]: « », [[HostDefined]]: hostDefined , [[CompileHintAnnotation]]: "all" } .
-5. Else,
-  a. Return Script Record { [[Realm]]: realm, [[ECMAScriptCode]]: script, [[LoadedModules]]: « », [[HostDefined]]: hostDefined  } .
+<ol start="3">
+<li>Let compileHintAnnotation be `true` if `sourceText` contains the Compile Hint Annotation, `false` otherwise.</li>
+<li>If compileHintAnnotation is `true`, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined , \[\[CompileHintAnnotation]]: "all" } .
+<li>Otherwise, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined  } .
+</ol>
 
 [ParseModule](https://tc39.es/ecma262/#sec-parsemodule) is modified as follows:
 
 11. Let compileHintAnnotation be `true`if `sourceText` contains the Compile Hint Annotation, `false`otherwise.
-12. If compileHintAnnotation is `true`,
-  a. Return Source Text Module Record { <existing Source Text Module Record Fields>, [[CompileHintAnnotation]]: "all"  }.
-13. Else,
-  a. Return Source Text Module Record { <existing Source Text Module Record Fields> }.
+12. If compileHintAnnotation is `true`, return Source Text Module Record { <existing Source Text Module Record Fields>, \[\[CompileHintAnnotation]]: "all"  }.
+13. Otherwise, return Source Text Module Record { <existing Source Text Module Record Fields> }.
 
 To check whether a JavaScript source string `source` contains the Compile Hint Annotation, run the following steps:
-1 If extracting a Compile Hint Annotation from `source` returns a string "all", return true
+
+1 If extracting a Compile Hint Annotation from `source` returns the string "all", return true.
 3 Return false.
 
 To extract a Compile Hint Annotation from a JavaScript source string `source`, run the following steps:
 
-1. Let tokens be the list of tokens obtained from parsing source according to [ECMASCRIPT].
+1. Let tokens be the list of tokens obtained from parsing source according to [!ECMASCRIPT].
 2. For each token in tokens:
   1. If token is not a single-line comment or a multi-line comment, continue.
   2. Let comment be the content of token.
@@ -57,8 +56,10 @@ To extract a Compile Hint Annotation from a JavaScript source string `source`, r
 4. Return null.
 
 To match a Compile Hint Annotation in a comment `comment` (a string), run the following steps:
-1. Let pattern be the regular expression /^[@#]\s*eagerCompilation=(\S*?)\s*$/.
+1. Let pattern be the regular expression `/^[@#]\s*eagerCompilation=(\S*?)\s*$/`.
 2. Let match be ! RegExpBuiltinExec(pattern, comment).
 3. Is match is not null, return match.
 4. Return null.
+
+
 
