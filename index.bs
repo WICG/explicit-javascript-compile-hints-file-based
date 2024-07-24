@@ -30,7 +30,7 @@ Additions to Script Records and Source Text Module Records {#additions}
 
 The [Script Record](https://tc39.es/ecma262/#sec-script-records) and [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records) are augmented to contain the following field:
 
-<table border="1">
+<table class="data">
     <tr>
         <td>Field name</td>
         <td>Value type</td>
