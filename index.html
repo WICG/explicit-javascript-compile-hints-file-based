@@ -2,13 +2,13 @@
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Explicit JavaScript Compile Hints (file-based)</title>
+  <title>Explicit JavaScript Compile Hints (File-based)</title>
   <meta content="w3c/UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <meta content="Bikeshed version a1dabb26c, updated Mon Jun 17 15:00:44 2024 -0700" name="generator">
   <link href="https://explainers-by-googlers.github.io/todo-your-repo-name" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="613c1eb2d6d90dc669b730b4268cab9892be2481" name="revision">
+  <meta content="2e949a4b31226e4e56c78167b41959ab65213832" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -549,8 +549,8 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
-   <h1 class="p-name no-ref" id="title">Explicit JavaScript Compile Hints (file-based)</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-07-22">22 July 2024</time></p>
+   <h1 class="p-name no-ref" id="title">Explicit JavaScript Compile Hints (File-based)</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-07-24">24 July 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -560,7 +560,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dt>Issue Tracking:
       <dd><a href="https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues/">GitHub</a>
       <dt class="editor">Editor:
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:TODO@google.com">TODO: Your Name</a> (<a class="p-org org" href="https://google.com">Google</a>)
+      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://google.com">Marja Hölttä</a> (<span class="p-org org">Google</span>) <a class="u-email email" href="mailto:marja@google.com">marja@google.com</a>
      </dl>
     </div>
    </details>
@@ -570,7 +570,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>TODO: A short description of your spec, one or two sentences.</p>
+   <p>FIXME: A short description of your spec, one or two sentences.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -581,6 +581,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li><a href="#extract"><span class="secno">2</span> <span class="content">Extracting Compile Hint Annotations from JavaScript source text</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -595,10 +596,57 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-   <p>For now, see the <a href="https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based">explainer</a>.</p>
-   <p>See <a href="https://garykac.github.io/procspec/">https://garykac.github.io/procspec/</a>, <a href="https://dlaliberte.github.io/bikeshed-intro/index.html">https://dlaliberte.github.io/bikeshed-intro/index.html</a>,
-and <a href="https://speced.github.io/bikeshed/">https://speced.github.io/bikeshed/</a> to get started on your
-specificaton.</p>
+   <p>FIXME: write intro</p>
+   <h2 class="heading settled" data-level="2" id="extract"><span class="secno">2. </span><span class="content">Extracting Compile Hint Annotations from JavaScript source text</span><a class="self-link" href="#extract"></a></h2>
+   <p>This section explains how the user agent may determine whether a JavaScript source text contains the Compile Hint Annotation and store the information in <a data-link-type="biblio" href="#biblio-ecmascript" title="ECMAScript Language Specification">[ECMASCRIPT]</a> Script Records and Source Text Module Records.</p>
+   <p><a href="https://tc39.es/ecma262/#sec-parse-script">ParseScript</a> is modified as follows:</p>
+   <ol start="3">
+    <li data-md>
+     <p>Let compileHintAnnotation be <code>true</code> if <code>sourceText</code> contains the Compile Hint Annotation, <code>false</code> otherwise.</p>
+    <p></p>
+    <li data-md>
+     <p>If compileHintAnnotation is <code>true</code>, return Script Record { [[Realm]]: realm, [[ECMAScriptCode]]: script, [[LoadedModules]]: « », [[HostDefined]]: hostDefined , [[CompileHintAnnotation]]: "all" } .</p>
+    <li data-md>
+     <p>Otherwise, return Script Record { [[Realm]]: realm, [[ECMAScriptCode]]: script, [[LoadedModules]]: « », [[HostDefined]]: hostDefined  } .</p>
+   </ol>
+   <p><a href="https://tc39.es/ecma262/#sec-parsemodule">ParseModule</a> is modified as follows:</p>
+   <ol start="11">
+    <li data-md>
+     <p>Let compileHintAnnotation be <code>true</code>if <code>sourceText</code> contains the Compile Hint Annotation, <code>false</code>otherwise.</p>
+    <li data-md>
+     <p>If compileHintAnnotation is <code>true</code>, return Source Text Module Record { existing Source Text Module Record Fields, [[CompileHintAnnotation]]: "all"  }.</p>
+    <li data-md>
+     <p>Otherwise, return Source Text Module Record { existing Source Text Module Record Fields }.</p>
+   </ol>
+   <p>To check whether a JavaScript source string <code>source</code> contains the Compile Hint Annotation, run the following steps:</p>
+   <p>1 If extracting a Compile Hint Annotation from <code>source</code> returns the string "all", return true.
+3 Return false.</p>
+   <p>To extract a Compile Hint Annotation from a JavaScript source string <code>source</code>, run the following steps:</p>
+   <ol>
+    <li data-md>
+     <p>Let tokens be the list of tokens obtained from parsing source according to [!ECMASCRIPT].</p>
+    <li data-md>
+     <p>For each token in tokens:</p>
+    <li data-md>
+     <p>If token is not a single-line comment or a multi-line comment, continue.</p>
+    <li data-md>
+     <p>Let comment be the content of token.</p>
+    <li data-md>
+     <p>If matching a compile hints annotation in comment returns a string, return it.</p>
+    <li data-md>
+     <p>Return null.</p>
+   </ol>
+   <p>To match a Compile Hint Annotation in a comment <code>comment</code> (a string), run the following steps:</p>
+   <ol>
+    <li data-md>
+     <p>Let pattern be the regular expression <code>/^[@#]\s*eagerCompilation=(\S*?)\s*$/</code>.</p>
+    <li data-md>
+     <p>Let match be ! RegExpBuiltinExec(pattern, comment).</p>
+    <li data-md>
+     <p>Is match is not null, return match.</p>
+    <li data-md>
+     <p>Return null.</p>
+   </ol>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -639,6 +687,8 @@ specificaton.</p>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-ecmascript">[ECMASCRIPT]
+   <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>
