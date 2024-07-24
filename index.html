@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version a1dabb26c, updated Mon Jun 17 15:00:44 2024 -0700" name="generator">
   <link href="https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/" rel="canonical">
-  <meta content="ba61fc2b3da037c431236c74e097e45421ccbe5d" name="revision">
+  <meta content="9d2b87617e61edcd1c753b646c772d2db97aa302" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2121,12 +2121,14 @@ Parts of this work may be from another specification document.  If so, those par
      <p>Let tokens be the list of tokens obtained from parsing source according to [!ECMASCRIPT].</p>
     <li data-md>
      <p>For each token in tokens:</p>
-    <li data-md>
-     <p>If token is not a single-line comment or a multi-line comment, continue.</p>
-    <li data-md>
-     <p>Let comment be the content of token.</p>
-    <li data-md>
-     <p>If matching a compile hints annotation in comment returns a string, return it.</p>
+     <ol>
+      <li data-md>
+       <p>If token is not a single-line comment or a multi-line comment, continue.</p>
+      <li data-md>
+       <p>Let comment be the content of token.</p>
+      <li data-md>
+       <p>If matching a compile hints annotation in comment returns a string, return it.</p>
+     </ol>
     <li data-md>
      <p>Return null.</p>
    </ol>
