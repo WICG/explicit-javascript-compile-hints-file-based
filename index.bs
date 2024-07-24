@@ -36,8 +36,8 @@ This section explains how the user agent may determine whether a JavaScript sour
 [ParseModule](https://tc39.es/ecma262/#sec-parsemodule) is modified as follows:
 
 11. Let compileHintAnnotation be `true`if `sourceText` contains the Compile Hint Annotation, `false`otherwise.
-12. If compileHintAnnotation is `true`, return Source Text Module Record { <existing Source Text Module Record Fields>, \[\[CompileHintAnnotation]]: "all"  }.
-13. Otherwise, return Source Text Module Record { <existing Source Text Module Record Fields> }.
+12. If compileHintAnnotation is `true`, return Source Text Module Record { existing Source Text Module Record Fields, \[\[CompileHintAnnotation]]: "all"  }.
+13. Otherwise, return Source Text Module Record { existing Source Text Module Record Fields }.
 
 To check whether a JavaScript source string `source` contains the Compile Hint Annotation, run the following steps:
 
