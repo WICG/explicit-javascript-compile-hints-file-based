@@ -29,11 +29,9 @@ This section explains how the user agent may determine whether a JavaScript sour
 
 [ParseScript](https://tc39.es/ecma262/#sec-parse-script) is modified as follows:
 
-<ol start="3">
-<li>Let compileHintAnnotation be `true` if `sourceText` contains the Compile Hint Annotation, `false` otherwise.</li>
-<li>If compileHintAnnotation is `true`, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined , \[\[CompileHintAnnotation]]: "all" } .
-<li>Otherwise, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined  } .
-</ol>
+3. Let compileHintAnnotation be `true` if `sourceText` contains the Compile Hint Annotation, `false` otherwise.</li>
+4. If compileHintAnnotation is `true`, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined , \[\[CompileHintAnnotation]]: "all" } .
+5. Otherwise, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined  } .
 
 [ParseModule](https://tc39.es/ecma262/#sec-parsemodule) is modified as follows:
 
