@@ -6,7 +6,7 @@ Status: LD
 Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
 URL: https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/
 Editor: Marja Hölttä, Google, https://google.com, marja@google.com
-Abstract: A magic comment in JavaScript for signaling certain scripts / functions should be prioritized
+Abstract: A magic comment in JavaScript for signaling certain scripts / functions should be prioritized.
 Markup Shorthands: markdown yes, css no
 Complain About: accidental-2119 yes, missing-example-ids yes
 Assume Explicit For: yes
@@ -49,37 +49,45 @@ Extracting Compile Hint Annotations from JavaScript source text {#extract}
 
 This section explains how the user agent may determine whether a JavaScript source text contains the Compile Hint Annotation and store the information in [[!ECMASCRIPT]] Script Records and Source Text Module Records.
 
+<h3 id="parsescript-and-parsemodule"> ParseScript and ParseModule</h3>
+
 [ParseScript](https://tc39.es/ecma262/#sec-parse-script) is modified as follows:
 
-3. Let compileHintAnnotation be `true` if `sourceText` contains the Compile Hint Annotation, `false` otherwise.</li>
-4. If compileHintAnnotation is `true`, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined , \[\[CompileHintAnnotation]]: "all" } .
-5. Otherwise, return Script Record { \[\[Realm]]: realm, \[\[ECMAScriptCode]]: script, \[\[LoadedModules]]: « », \[\[HostDefined]]: hostDefined  } .
+3. Let *compileHintAnnotation* be **true** if *sourceText* [contains the Compile Hint Annotation](#check-string-contains), **false** otherwise.
+4. If *compileHintAnnotation* is **true**, return [Script Record](https://tc39.es/ecma262/#sec-script-records) { existing Script Record fields, \[\[CompileHintAnnotation]]: **"all"** } .
+5. Otherwise, return [Script Record](https://tc39.es/ecma262/#sec-script-records) { existing Script Record fields } .
 
 [ParseModule](https://tc39.es/ecma262/#sec-parsemodule) is modified as follows:
 
-11. Let compileHintAnnotation be `true`if `sourceText` contains the Compile Hint Annotation, `false`otherwise.
-12. If compileHintAnnotation is `true`, return Source Text Module Record { existing Source Text Module Record Fields, \[\[CompileHintAnnotation]]: "all"  }.
-13. Otherwise, return Source Text Module Record { existing Source Text Module Record Fields }.
+11. Let *compileHintAnnotation* be **true** if *sourceText* [contains the Compile Hint Annotation](#check-string-contains), **false** otherwise.
+12. If *compileHintAnnotation* is **true**, return [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records) { existing Source Text Module Record fields, \[\[CompileHintAnnotation]]: **"all"**  }.
+13. Otherwise, return [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records) { existing Source Text Module Record fields }.
 
-To check whether a JavaScript source string `source` contains the Compile Hint Annotation, run the following steps:
+<h3 id="check-string-contains">Checking whether a source string contains the Compile Hint Annotation</h3>
 
-1. If extracting a Compile Hint Annotation from `source` returns the string "all", return true.
-2. Return false.
+To check whether a JavaScript source string *source* contains the Compile Hint Annotation, run the following steps:
 
-To extract a Compile Hint Annotation from a JavaScript source string `source`, run the following steps:
+1. If [extracting a Compile Hint Annotation](#extract-compile-hint-annotation) from *source* returns the String **"all"**, return **true**.
+2. Return **false**.
 
-1. Let tokens be the list of tokens obtained from parsing source according to [!ECMASCRIPT].
-2. For each token in tokens:
-    1. If token is not a single-line comment or a multi-line comment, continue.
-    2. Let comment be the content of token.
-    3. If matching a compile hints annotation in comment returns a string, return it.
-4. Return null.
+<h3 id="extract-compile-hint-annotation">Extracting a Compile Hint Annotation from a JavaScript source string</h3>
 
-To match a Compile Hint Annotation in a comment `comment` (a string), run the following steps:
-1. Let pattern be the regular expression `/^[@#]\s*eagerCompilation=(\S*?)\s*$/`.
-2. Let match be ! RegExpBuiltinExec(pattern, comment).
-3. Is match is not null, return match.
-4. Return null.
+To extract a Compile Hint Annotation from a JavaScript source string *source*, run the following steps:
+
+1. Let *tokens* be the [List](https://tc39.es/ecma262/#sec-list-and-record-specification-type) of tokens obtained from parsing *source* according to [[!ECMASCRIPT]].
+2. For each *token* in *tokens*:
+    1. If *token* is not a [single line comment](https://tc39.es/ecma262/#prod-SingleLineComment) or a [multi-line comment](https://tc39.es/ecma262/#prod-MultiLineComment), continue.
+    2. Let *comment* be the content of *token*.
+    3. If [matching a Compile Hint Annotation](#matching-compile-hint-annotation) in *comment* returns a String, return it.
+4. Return **null**.
+
+<h3 id="matching-compile-hint-annotation">Matching a Compile Hint Annotation in a String</h3>
+
+To match a Compile Hint Annotation in a String *comment*, run the following steps:
+1. Let *pattern* be the regular expression **/^[@#]\s*eagerCompilation=(\S*?)\s*$/**.
+2. Let *match* be ! [RegExpBuiltinExec](https://tc39.es/ecma262/#sec-regexpbuiltinexec)(*pattern*, *comment*).
+3. Is *match* is not **null**, return *match*.
+4. Return **null**.
 
 Using the \[\[CompileHintAnnotation]] internal field {#using}
 =============================================================
