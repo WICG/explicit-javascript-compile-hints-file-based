@@ -76,7 +76,7 @@ To extract a Compile Hint Annotation from a JavaScript source string *source*, r
 
 1. Let *tokens* be the [List](https://tc39.es/ecma262/#sec-list-and-record-specification-type) of tokens obtained from parsing *source* according to [[!ECMASCRIPT]].
 2. For each *token* in *tokens*:
-    1. If *token* is not a [single line comment](https://tc39.es/ecma262/#prod-SingleLineComment) or a [multi-line comment](https://tc39.es/ecma262/#prod-MultiLineComment), continue.
+    1. If *token* is not a [single line comment](https://tc39.es/ecma262/#prod-SingleLineComment) or a [multi-line comment](https://tc39.es/ecma262/#prod-MultiLineComment), return.
     2. Let *comment* be the content of *token*.
     3. If [matching a Compile Hint Annotation](#matching-compile-hint-annotation) in *comment* returns a String, return it.
 4. Return **null**.
@@ -84,7 +84,7 @@ To extract a Compile Hint Annotation from a JavaScript source string *source*, r
 <h3 id="matching-compile-hint-annotation">Matching a Compile Hint Annotation in a String</h3>
 
 To match a Compile Hint Annotation in a String *comment*, run the following steps:
-1. Let *pattern* be the regular expression **/^[@#]\s*eagerCompilation=(\S*?)\s*$/**.
+1. Let *pattern* be the regular expression **/^#\s*eagerCompilation=(\S*?)\s*$/**.
 2. Let *match* be ! [RegExpBuiltinExec](https://tc39.es/ecma262/#sec-regexpbuiltinexec)(*pattern*, *comment*).
 3. Is *match* is not **null**, return *match*.
 4. Return **null**.
