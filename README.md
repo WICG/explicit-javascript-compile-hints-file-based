@@ -90,6 +90,9 @@ We propse adding the following magic comment to trigger eager compilation of all
 
 ```JavaScript
 //# eagerCompilation=all
+
+function foo() { ... } // will now be eagerly parsed and compiled
+function bar() { ... } // will now be eagerly parsed and compiled
 ```
 
 The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when a function is called.
