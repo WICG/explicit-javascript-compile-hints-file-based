@@ -3,8 +3,8 @@ Title: Explicit JavaScript Compile Hints (File-based)
 Shortname: explicit-js-compile-hints
 Level: None
 Status: LD
-Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
-URL: https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/
+Repository: WICG/explicit-javascript-compile-hints-file-based
+URL: https://github.com/WICG/explicit-javascript-compile-hints-file-based
 Editor: Marja Hölttä, Google, https://google.com, marja@google.com
 Abstract: A magic comment in JavaScript for signaling certain scripts / functions should be prioritized.
 Markup Shorthands: markdown yes, css no
@@ -24,6 +24,17 @@ Introduction {#intro}
 This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript script are likely to be needed by the website. This allows the browser to parse, compile and/or cache them eagerly, which can improve page load times.
 
 In its current form, it’s not a defined standard and is subject to modifications.
+
+Example usage {#example}
+========================
+
+In this example, the magic comment is used for triggering the eager compilation of the two JavaScript functions in the file:
+```JavaScript
+//# eagerCompilation=all
+
+function foo() { ... } // will now be eagerly parsed and compiled
+function bar() { ... } // will now be eagerly parsed and compiled
+```
 
 Additions to Script Records and Source Text Module Records {#additions}
 =======================================================================
