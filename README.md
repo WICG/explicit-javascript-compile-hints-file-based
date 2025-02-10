@@ -32,7 +32,7 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
   - [How this solution would solve the use cases](#how-this-solution-would-solve-the-use-cases)
 - [Detailed design discussion](#detailed-design-discussion)
   - [Per-file or per-function?](#per-file-or-per-function)
-- [Considered alternatives](#considered-alternatives)
+- [Alternatives considered](#alternatives-considered)
   - [Alternative: Top-level magic comment with per-function data as payload](#alternative-top-level-magic-comment-with-per-function-data-as-payload)
   - [Alternative: Top-level "use eager" directive and per-function "use eager" directive](#alternative-top-level-use-eager-directive-and-per-function-use-eager-directive)
   - [Alternative: per-function magic comment](#alternative-per-function-magic-comment)
@@ -42,6 +42,8 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
   - [Alternative: do nothing / no solution for web developers to control eager compilation](#alternative-do-nothing--no-solution-for-web-developers-to-control-eager-compilation)
 - [Risks and mitigations](#risks-and-mitigations)
 - [Stakeholder feedback / opposition](#stakeholder-feedback--opposition)
+- [FAQ](#faq)
+  - [Q: Why are you not pursuing standardizing the feature via TC39?](#q-why-are-you-not-pursuing-standardizing-the-feature-via-tc39)
 - [References & acknowledgements](#references--acknowledgements)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -257,9 +259,18 @@ Concerns brought up by other browser implementors:
 - The optimal set of files / functions to eager compile might be different for different browsers.
 - Compile hints are only relevant for the "cold load" (the initial, non-cached load of a website). After the initial web page load, the browser might be in a better position to decide which functions should be eagerly compiled than the web developers.
 
+## FAQ
+
+### Q: Why are you not pursuing standardizing the feature via TC39?
+
+This feature only impacts performance. It doesn't change observable behavior, and thus it avoids the kind of interoperability challenges that TC39 is designed to address. Currently, other browser implementors have not show interest in implementing performance optimizations based on this feature.
+
+Incubating in WICG allows us to gather feedback from stakeholders and iterate on the spec in a faster and leaner way. We'll also keep the format as generic as possible - to make it as easy as possible for other browsers to implement performance optimisations based on this feature later - and incorporate feedback from other browsers into the spec.
+
 ## References & acknowledgements
 
 Many thanks for valuable feedback and advice from:
 
-- Shu-Yu Guo, Toon Verwaest, Leszek Swirski, Noam Rosenthal and others from V8 (Google)
+- Shu-Yu Guo, Toon Verwaest and Leszek Swirski from V8 (Google)
 - Philip Weiss, Adam Giacobbe and Quade Jones from Workspace (Google)
+- Noam Rosenthal and other spec experts (Google)

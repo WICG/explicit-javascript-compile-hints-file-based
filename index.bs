@@ -4,7 +4,7 @@ Shortname: explicit-js-compile-hints
 Level: None
 Status: LD
 Repository: explainers-by-googlers/explicit-javascript-compile-hints-file-based
-URL: https://explainers-by-googlers.github.io/explicit-javascript-compile-hints-file-based/
+URL: https://wicg.github.io/explicit-javascript-compile-hints-file-based/
 Editor: Marja Hölttä, Google, https://google.com, marja@google.com
 Abstract: A magic comment in JavaScript for signaling certain scripts / functions should be prioritized.
 Markup Shorthands: markdown yes, css no
