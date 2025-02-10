@@ -10,6 +10,10 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 ## Participate
 - https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
 
+## Spec draft
+
+[Spec draft](https://wicg.github.io/explicit-javascript-compile-hints-file-based/)
+
 ## Table of contents
 
 <!-- Update this table of contents by running `npx doctoc README.md` -->
@@ -142,7 +146,7 @@ Selecting a whole file for eager compilation might overshoot: if some functions 
 
 In this proposal, we're proposing a magic comment for marking the whole file for eager compilation. We'd like to make it easy to extend the feature to be able to mark individual functions in the future.
 
-## Considered alternatives
+## Alternatives considered
 
 ### Alternative: Top-level magic comment with per-function data as payload
 
@@ -257,5 +261,5 @@ Concerns brought up by other browser implementors:
 
 Many thanks for valuable feedback and advice from:
 
-- Shu-Yu Guo, Toon Verwaest and Leszek Swirski from V8 (Google)
-- Philip Weiss and Adam Giacobbe from Workspace (Google)
+- Shu-Yu Guo, Toon Verwaest, Leszek Swirski, Noam Rosenthal and others from V8 (Google)
+- Philip Weiss, Adam Giacobbe and Quade Jones from Workspace (Google)
