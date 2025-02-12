@@ -263,7 +263,7 @@ Concerns brought up by other browser implementors:
 
 ### Q: Why are you not pursuing standardizing the feature via TC39?
 
-This feature only impacts performance. It doesn't change observable behavior, and thus it avoids the kind of interoperability challenges that TC39 is designed to address. Currently, other browser implementors have not show interest in implementing performance optimizations based on this feature.
+This feature only impacts performance. It doesn't change observable behavior, and thus it avoids the kind of interoperability challenges that TC39 is designed to address. Currently, other browser implementors have not shown interest in implementing performance optimizations based on this feature.
 
 Incubating in WICG allows us to gather feedback from stakeholders and iterate on the spec in a faster and leaner way. We'll also keep the format as generic as possible - to make it as easy as possible for other browsers to implement performance optimisations based on this feature later - and incorporate feedback from other browsers into the spec.
 
