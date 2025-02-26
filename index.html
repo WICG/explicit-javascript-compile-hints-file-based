@@ -1488,9 +1488,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 97a1608be, updated Mon Feb 3 16:09:34 2025 -0800" name="generator">
+  <meta content="Bikeshed version 60c422380, updated Thu Feb 20 19:11:22 2025 -0800" name="generator">
   <link href="https://wicg.github.io/explicit-javascript-compile-hints-file-based/" rel="canonical">
-  <meta content="138d1d13ecf2638dd5acd2e62a98e5de69b74833" name="revision">
+  <meta content="82dc251e9aeffbc2e22667eb65fb63a5e4add193" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2031,7 +2031,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Explicit JavaScript Compile Hints (File-based)</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-02-12">12 February 2025</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-02-26">26 February 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2045,7 +2045,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 12 February 2025,
+In addition, as of 26 February 2025,
 the editors have made this specification available under the <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2066,8 +2066,7 @@ Parts of this work may be from another specification document.  If so, those par
      <ol class="toc">
       <li><a href="#parsescript-and-parsemodule"><span class="secno">3.1</span> <span class="content"> ParseScript and ParseModule</span></a>
       <li><a href="#check-string-contains"><span class="secno">3.2</span> <span class="content">Checking whether a source string contains the Compile Hint Annotation</span></a>
-      <li><a href="#extract-compile-hint-annotation"><span class="secno">3.3</span> <span class="content">Extracting a Compile Hint Annotation from a JavaScript source string</span></a>
-      <li><a href="#matching-compile-hint-annotation"><span class="secno">3.4</span> <span class="content">Matching a Compile Hint Annotation in a String</span></a>
+      <li><a href="#matching-compile-hint-annotation"><span class="secno">3.3</span> <span class="content">Matching a Compile Hint Annotation in a String</span></a>
      </ol>
     <li><a href="#using"><span class="secno">4</span> <span class="content">Using the [[CompileHintAnnotation]] internal field</span></a>
     <li>
@@ -2119,39 +2118,31 @@ Parts of this work may be from another specification document.  If so, those par
    <p>To check whether a JavaScript source string <em>source</em> contains the Compile Hint Annotation, run the following steps:</p>
    <ol>
     <li data-md>
-     <p>If <a href="#extract-compile-hint-annotation">extracting a Compile Hint Annotation</a> from <em>source</em> returns the String <strong>"all"</strong>, return <strong>true</strong>.</p>
-    <li data-md>
-     <p>Return <strong>false</strong>.</p>
-   </ol>
-   <h3 class="heading settled" data-level="3.3" id="extract-compile-hint-annotation"><span class="secno">3.3. </span><span class="content">Extracting a Compile Hint Annotation from a JavaScript source string</span><a class="self-link" href="#extract-compile-hint-annotation"></a></h3>
-   <p>To extract a Compile Hint Annotation from a JavaScript source string <em>source</em>, run the following steps:</p>
-   <ol>
-    <li data-md>
      <p>Let <em>tokens</em> be the <a href="https://tc39.es/ecma262/#sec-list-and-record-specification-type">List</a> of tokens obtained from parsing <em>source</em> according to <a data-link-type="biblio" href="#biblio-ecmascript" title="ECMAScript Language Specification">[ECMASCRIPT]</a>.</p>
     <li data-md>
      <p>For each <em>token</em> in <em>tokens</em>:</p>
      <ol>
       <li data-md>
-       <p>If <em>token</em> is not a <a href="https://tc39.es/ecma262/#prod-SingleLineComment">single line comment</a> or a <a href="https://tc39.es/ecma262/#prod-MultiLineComment">multi-line comment</a>, return.</p>
+       <p>If <em>token</em> is not a <a href="https://tc39.es/ecma262/#prod-SingleLineComment">single line comment</a> or a <a href="https://tc39.es/ecma262/#prod-MultiLineComment">multi-line comment</a>, return <strong>false</strong>.</p>
       <li data-md>
        <p>Let <em>comment</em> be the content of <em>token</em>.</p>
       <li data-md>
-       <p>If <a href="#matching-compile-hint-annotation">matching a Compile Hint Annotation</a> in <em>comment</em> returns a String, return it.</p>
+       <p>If <a href="#matching-compile-hint-annotation">matching a Compile Hint Annotation</a> in <em>comment</em> returns <strong>true</strong>, return <strong>true</strong>.</p>
      </ol>
     <li data-md>
-     <p>Return <strong>null</strong>.</p>
+     <p>Return <strong>false</strong>.</p>
    </ol>
-   <h3 class="heading settled" data-level="3.4" id="matching-compile-hint-annotation"><span class="secno">3.4. </span><span class="content">Matching a Compile Hint Annotation in a String</span><a class="self-link" href="#matching-compile-hint-annotation"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="matching-compile-hint-annotation"><span class="secno">3.3. </span><span class="content">Matching a Compile Hint Annotation in a String</span><a class="self-link" href="#matching-compile-hint-annotation"></a></h3>
    <p>To match a Compile Hint Annotation in a String <em>comment</em>, run the following steps:</p>
    <ol>
     <li data-md>
-     <p>Let <em>pattern</em> be the regular expression <strong>/^#\s*eagerCompilation=(\S*?)\s*$/</strong>.</p>
+     <p>Let <em>pattern</em> be the regular expression <strong>/^#\s*allFunctionsCalledOnLoad\s*$/</strong>.</p>
     <li data-md>
      <p>Let <em>match</em> be ! <a href="https://tc39.es/ecma262/#sec-regexpbuiltinexec">RegExpBuiltinExec</a>(<em>pattern</em>, <em>comment</em>).</p>
     <li data-md>
-     <p>Is <em>match</em> is not <strong>null</strong>, return <em>match</em>.</p>
+     <p>Is <em>match</em> is not <strong>null</strong>, return <strong>true</strong>.</p>
     <li data-md>
-     <p>Return <strong>null</strong>.</p>
+     <p>Return <strong>false</strong>.</p>
    </ol>
    <h2 class="heading settled" data-level="4" id="using"><span class="secno">4. </span><span class="content">Using the [[CompileHintAnnotation]] internal field</span><a class="self-link" href="#using"></a></h2>
    <p>This non-normative section describes how the user agent may use the Compile Hint Annotation.</p>
