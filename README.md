@@ -54,7 +54,7 @@ This proposal introduces a new magic comment that signals to browsers that the f
 
 In this example, the magic comment is used for triggering the eager compilation of the two JavaScript functions in the file:
 ```JavaScript
-//# eagerCompilation=all
+//# allFunctionsCalledOnLoad
 
 function foo() { ... } // will now be eagerly parsed and compiled
 function bar() { ... } // will now be eagerly parsed and compiled
@@ -103,7 +103,7 @@ When users interact with websites, there are delays in how quickly the website r
 We propse adding the following magic comment to trigger eager compilation of all functions in the JavaScript file:
 
 ```JavaScript
-//# eagerCompilation=all
+//# allFunctionsCalledOnLoad
 ```
 
 The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when a function is called.
@@ -154,7 +154,7 @@ In this proposal, we're proposing a magic comment for marking the whole file for
 
 Example:
 ```JavaScript
-//# eagerCompilationData=<payload>
+//# functionsCalledOnLoad<payload>
 ```
 
 The payload would describe the function positions of the functions to be eagerly compiled. Designing a suitable payload format is non-trivial.
