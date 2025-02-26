@@ -154,7 +154,7 @@ In this proposal, we're proposing a magic comment for marking the whole file for
 
 Example:
 ```JavaScript
-//# functionsCalledOnLoad<payload>
+//# functionsCalledOnLoad=<payload>
 ```
 
 The payload would describe the function positions of the functions to be eagerly compiled. Designing a suitable payload format is non-trivial.
