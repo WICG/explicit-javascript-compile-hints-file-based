@@ -67,27 +67,20 @@ This section explains how the user agent may determine whether a JavaScript sour
 
 To check whether a JavaScript source string *source* contains the Compile Hint Annotation, run the following steps:
 
-1. If [extracting a Compile Hint Annotation](#extract-compile-hint-annotation) from *source* returns the String **"all"**, return **true**.
-2. Return **false**.
-
-<h3 id="extract-compile-hint-annotation">Extracting a Compile Hint Annotation from a JavaScript source string</h3>
-
-To extract a Compile Hint Annotation from a JavaScript source string *source*, run the following steps:
-
 1. Let *tokens* be the [List](https://tc39.es/ecma262/#sec-list-and-record-specification-type) of tokens obtained from parsing *source* according to [[!ECMASCRIPT]].
 2. For each *token* in *tokens*:
-    1. If *token* is not a [single line comment](https://tc39.es/ecma262/#prod-SingleLineComment) or a [multi-line comment](https://tc39.es/ecma262/#prod-MultiLineComment), return.
+    1. If *token* is not a [single line comment](https://tc39.es/ecma262/#prod-SingleLineComment) or a [multi-line comment](https://tc39.es/ecma262/#prod-MultiLineComment), return **false**.
     2. Let *comment* be the content of *token*.
-    3. If [matching a Compile Hint Annotation](#matching-compile-hint-annotation) in *comment* returns a String, return it.
-4. Return **null**.
+    3. If [matching a Compile Hint Annotation](#matching-compile-hint-annotation) in *comment* returns **true**, return **true**.
+4. Return **false**.
 
 <h3 id="matching-compile-hint-annotation">Matching a Compile Hint Annotation in a String</h3>
 
 To match a Compile Hint Annotation in a String *comment*, run the following steps:
-1. Let *pattern* be the regular expression **/^#\s*eagerCompilation=(\S*?)\s*$/**.
+1. Let *pattern* be the regular expression **/^#\s*allFunctionsCalledOnLoad\s*$/**.
 2. Let *match* be ! [RegExpBuiltinExec](https://tc39.es/ecma262/#sec-regexpbuiltinexec)(*pattern*, *comment*).
-3. Is *match* is not **null**, return *match*.
-4. Return **null**.
+3. Is *match* is not **null**, return **true**.
+4. Return **false**.
 
 Using the \[\[CompileHintAnnotation]] internal field {#using}
 =============================================================
