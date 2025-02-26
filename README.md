@@ -195,9 +195,9 @@ We'd like to propose a solution which we can later extend with per-function info
 
 Example:
 ```
-/*eagerCompilation*/ function foo() { ... }
+/*calledOnLoad*/ function foo() { ... }
 class C {
-  /*eagerCompilation*/ m() { ... }
+  /*calledOnLoad*/ m() { ... }
 }
 ```
 
@@ -209,17 +209,17 @@ We could also add compile hint data (either the per-file version, or per-functio
 
 Example / per-file compile hint in script tag:
 ```
-<script src="..." eager-compilation>
+<script src="..." all-functions-called-on-load>
 ```
 
 Example / per-function compile hint data in script tag:
 ```
-<script src="..." eager-compilation-data="<payload>">
+<script src="..." functions-called-on-load="<payload>">
 ```
 
 Example / per-function compile hint data in script tag:
 ```
-<script src="..." eager-compilation-data-file="metadata-filepath">
+<script src="..." functions-called-on-load-file="metadata-filepath">
 ```
 
 Downsides:
