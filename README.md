@@ -1,7 +1,10 @@
 # Explainer for Explicit JavaScript Compile Hints
 
-This proposal is an early design sketch by the V8 team to describe the problem below and solicit
-feedback on the proposed solution. It has not been approved to ship in Chrome.
+This proposal has two parts, the per-file explicit compile hints and the per-function explicit compile hints.
+
+The per-file part is currently enabled in default in Chromium-based browsers.
+
+The per-function part is a design sketch by the V8 team to describe the problem below and solicit feedback on the proposed solution. It has not been approved to ship in Chrome.
 
 ## Proponents
 
