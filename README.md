@@ -10,9 +10,13 @@ feedback on the proposed solution. It has not been approved to ship in Chrome.
 ## Participate
 - https://github.com/explainers-by-googlers/explicit-javascript-compile-hints-file-based/issues
 
-## Spec draft
+## Spec draft for the per-file version
 
 [Spec draft](https://wicg.github.io/explicit-javascript-compile-hints-file-based/)
+
+## Spec draft for the per-function version
+
+TBD
 
 ## Table of contents
 
@@ -59,6 +63,8 @@ In this example, the magic comment is used for triggering the eager compilation 
 function foo() { ... } // will be eagerly parsed and compiled
 function bar() { ... } // will be eagerly parsed and compiled
 ```
+
+Chromium-based browsers currently support the file-based compile hints.
 
 Triggering eager compilations for individual functions is under active development:
 ```JavaScript
