@@ -123,6 +123,11 @@ We propse adding the following magic comment to trigger eager compilation of all
 ```JavaScript
 //# allFunctionsCalledOnLoad
 ```
+and the following comment to trigger eager compilation of individual functions in the JavaScript file:
+
+```JavaScript
+//# functionsCalledOnLoad=<base64 enconded binary data>
+```
 
 The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when a function is called.
 
@@ -132,7 +137,9 @@ The format for the magic comment is similar to the [Source Map magic comment](ht
 
 The magic comment should be at the top of the file, preceeded only by other single-line or multiline comments.
 
-Web developers should consider using explicit compile hints for files that contain important functions which are likely to be needed by the website early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
+Web developers should consider using the file-based explicit compile hints for files that contain important functions which are likely to be needed by the website early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
+
+The per-function compile hints should be inserted based on data about which functions are called during the web page load or important user interactions.
 
 ### Possible browser implementations
 
