@@ -153,7 +153,7 @@ Chromium is currently experimenting with the feature (options 1 and 3).
 
 The solution of explicit compile hints addresses the identified use cases by providing developers with a mechanism to prioritize the parsing and compilation of critical JavaScript functions, thereby speeding up the initial page load. This results in smoother browsing experiences, especially on mobile devices with limited resources.
 
-## Detailed design discussion
+## Design discussion
 
 ### Per-file or per-function?
 
@@ -161,7 +161,7 @@ If compile hints apply to the full file, web developers can manually select a "c
 
 Selecting a whole file for eager compilation might overshoot: if some functions are not needed, compiling them takes CPU time, and storing the compiled code takes up memory (although, unused code may eventually be garbage collected).
 
-In this proposal, we're proposing a magic comment for marking the whole file for eager compilation. We'd like to make it easy to extend the feature to be able to mark individual functions in the future.
+The per-file version of this feature is currently shipping in Chromium-based browsers. The per-function version is under active development.
 
 ## Alternatives considered
 
