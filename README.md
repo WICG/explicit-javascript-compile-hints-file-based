@@ -56,8 +56,17 @@ In this example, the magic comment is used for triggering the eager compilation 
 ```JavaScript
 //# allFunctionsCalledOnLoad
 
-function foo() { ... } // will now be eagerly parsed and compiled
-function bar() { ... } // will now be eagerly parsed and compiled
+function foo() { ... } // will be eagerly parsed and compiled
+function bar() { ... } // will be eagerly parsed and compiled
+```
+
+Triggering eager compilations for individual functions is under active development:
+```JavaScript
+//# functionsCalledOnLoad=<base64 enconded binary data>
+// Experimental!!!
+
+function foo() { ... } // will be eagerly parsed and compiled, if the binary data instructs so
+function bar() { ... } // will be eagerly parsed and compiled, if the binary data instructs so
 ```
 
 ### On JavaScript parsing and compilation
@@ -149,19 +158,6 @@ Selecting a whole file for eager compilation might overshoot: if some functions 
 In this proposal, we're proposing a magic comment for marking the whole file for eager compilation. We'd like to make it easy to extend the feature to be able to mark individual functions in the future.
 
 ## Alternatives considered
-
-### Alternative: Top-level magic comment with per-function data as payload
-
-Example:
-```JavaScript
-//# functionsCalledOnLoad=<payload>
-```
-
-The payload would describe the function positions of the functions to be eagerly compiled. Designing a suitable payload format is non-trivial.
-
-We'd also need to make sure that web development toolchains can generate the per-function data and incorporate it in an automatic fashion. For finding the functions, we suggest a profile-guided optimization (PGO) approach: launching a web server, loading the website and logging which functions were called, and generating the per-function annotation based on the data. This area needs more experimentation.
-
-We'd like to keep this alternative as a future extension, and propose the per-file magic comment solution first.
 
 ### Alternative: Top-level "use eager" directive and per-function "use eager" directive
 
