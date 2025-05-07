@@ -147,17 +147,17 @@ Different browsers may handle the magic comment differently, based on their desi
 
 The following examples describe possible and valid actions when encountering a file with the magic comment:
 
-Implementation 1: Background-parse the JavaScript file while downloading it. Mark all functions for compilation, potentially by separate background compilation tasks (possibly up to a quota).
+Implementation 1: Background-parse the JavaScript file while downloading it. Mark the targeted functions for compilation, potentially by separate background compilation tasks (possibly up to a quota).
 
-Implementation 2: Parse the JavaScript file and compile all functions eagerly on the main thread (possibly up to a quota).
+Implementation 2: Parse the JavaScript file and compile the targeted functions eagerly on the main thread (possibly up to a quota).
 
-Implementation 3: Ignore the hint when initially compiling the file. When a code cache for the file is created (e.g., when a user visits the same website often enough that cache creation is deemed useful), create a code cache containing all the functions in the file.
+Implementation 3: Ignore the hint when initially compiling the file. When a code cache for the file is created (e.g., when a user visits the same website often enough that cache creation is deemed useful), create a code cache containing the targeted functions in the file.
 
 Implementation 4: Like Implementation 1/2 but compile the functions with a higher tier compiler right away.
 
 Implementation 5: Ignore the hint.
 
-Chromium is currently experimenting with the feature (options 1 and 3). 
+The implementation of the per-file compile hints and the experimental implementation of the per-function compile hints in Chromium both follow Option 1. There are currently no non-Chromium implementations.
 
 ### How this solution would solve the use cases
 
