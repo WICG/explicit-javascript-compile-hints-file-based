@@ -139,7 +139,7 @@ The per-file magic comment must be at the top of the file, preceeded only by oth
 
 Web developers should consider using the file-based explicit compile hints for files that contain important functions which are likely to be needed by the website early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
 
-The per-function compile hints should be inserted based on data about which functions are called during the web page load or important user interactions.
+The per-function compile hints should be inserted based on data about which functions are called during the web page load or important user interactions. Here, a profile-guided optimization (PGO) approach is useful. Tools can first instrument the JavaScript source code to track when functions are called. This can be done by adding a statement which creates a log entry containing a suitable function identifier (or simply prints it out with `console.log`). Then the instrumented web page is started up, and exercised by loading a web page and potentially executing some user interactions. Then the logs are inspected to find out which functions got called, and those functions are then encoded in the per-function compile hint.
 
 ### Possible browser implementations
 
