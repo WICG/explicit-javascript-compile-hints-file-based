@@ -305,4 +305,5 @@ Many thanks for valuable feedback and advice from:
 
 - Shu-Yu Guo, Toon Verwaest and Leszek Swirski from V8 (Google)
 - Philip Weiss, Adam Giacobbe and Quade Jones from Workspace (Google)
-- Noam Rosenthal and other spec experts (Google)
+- Scott Haseley, Noam Rosenthal and other spec experts (Google)
+- Yulia Startsev (Mozilla) and Keith Miller (Apple)
