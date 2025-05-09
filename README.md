@@ -57,7 +57,7 @@ TBD
 
 ## Introduction
 
-This proposal introduces a new magic comment that signals to browsers that the functions in a JavaScript file are likely to be needed by the website. This allows the browser to parse and compile them eagerly, which can improve page load times.
+This proposal introduces a new magic comment that signals to browsers that some or all the functions in a JavaScript file are likely to be needed by the website. This allows the browser to parse and compile them eagerly, which can improve page load times.
 
 In this example, the magic comment is used for triggering the eager compilation of the two JavaScript functions in the file:
 ```JavaScript
@@ -133,7 +133,7 @@ The magic comment is intended as a hint to the browser. It signals the functions
 
 The magic comment doesn't change the semantics of the JavaScript file. The browser is allowed to ignore the hint.
 
-The format for the magic comment is similar to the [Source Map magic comment](https://sourcemaps.info/spec.html).
+The overall format for the magic comment is similar to the [Source Map magic comment](https://sourcemaps.info/spec.html).
 
 The per-file magic comment must be at the top of the file, preceeded only by other single-line or multiline comments. The per-function magic comment can be anywhere, but it can only refer to functions after it. It can also be overridden by another per-function magic comment.
 
