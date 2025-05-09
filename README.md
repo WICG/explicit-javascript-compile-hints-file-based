@@ -185,6 +185,14 @@ We want to design the per-function magic comment so that the following property 
 
 This property is achieved by making the per-function magic comment encode function positions relative to the comment end.
 
+### Several tiers or priorities?
+
+We might want to mark some functions "more important" than other functions. For example, functions used during the web page load are more important than functions used during specific user interactions, and functions called many times are more important than functions called only a few times.
+
+Depending on the meaning of "more important", the browser could then compile "more important" functions earlier (if it's about those functions being called ealier in time) or compile them with a higher compiler tier (if it's about those functions being called more times).
+
+This area needs more experimentation and is left as a possible future extension.
+
 ## Alternatives considered
 
 ### Alternative: Top-level "use eager" directive and per-function "use eager" directive
