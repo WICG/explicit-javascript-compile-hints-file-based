@@ -71,7 +71,7 @@ Chromium-based browsers currently support the file-based compile hints.
 
 Triggering eager compilations for individual functions is under active development:
 ```JavaScript
-//# functionsCalledOnLoad=<base64 enconded binary data>
+//# functionsCalledOnLoad=<base64 encoded binary data>
 // Experimental!!!
 
 function foo() { ... } // will be eagerly parsed and compiled, if the binary data instructs so
@@ -126,7 +126,7 @@ We propse adding the following magic comment to trigger eager compilation of all
 and the following comment to trigger eager compilation of individual functions in the JavaScript file:
 
 ```JavaScript
-//# functionsCalledOnLoad=<base64 enconded binary data>
+//# functionsCalledOnLoad=<base64 encoded binary data>
 ```
 
 The magic comment is intended as a hint to the browser. It signals the functions in this JS file should be treated as "high priority" - for example, compile them immediately when processing the script, as opposed to when a function is called.
@@ -135,7 +135,7 @@ The magic comment doesn't change the semantics of the JavaScript file. The brows
 
 The format for the magic comment is similar to the [Source Map magic comment](https://sourcemaps.info/spec.html).
 
-The magic comment should be at the top of the file, preceeded only by other single-line or multiline comments.
+The per-file magic comment must be at the top of the file, preceeded only by other single-line or multiline comments. The per-function magic comment can be anywhere, but it can only refer to functions after it. It can also be overridden by another per-function magic comment.
 
 Web developers should consider using the file-based explicit compile hints for files that contain important functions which are likely to be needed by the website early on. For example, they might use explicit compile hints for a file that contains the main entry point for the application, or for a file that contains a critical library.
 
@@ -172,6 +172,18 @@ If compile hints apply to the full file, web developers can manually select a "c
 Selecting a whole file for eager compilation might overshoot: if some functions are not needed, compiling them takes CPU time, and storing the compiled code takes up memory (although, unused code may eventually be garbage collected).
 
 The per-file version of this feature is currently shipping in Chromium-based browsers. The per-function version is under active development.
+
+### Require the per-file magic comment to be at the top of the file?
+
+We must spec the per-file magic comment so it only applies to functions after it. This way JavaScript engines can make the eager vs lazy decision right after seeing the function declaration, without waiting to see whether there's a magic comment somewhere later in the file.
+
+For this, we have two options. Option 1: the comment must be at the top of the file and Option 2: the comment can be anywhere, but only applies to functions after it. We chose Option 1 because it's easier to spec and avoids the potential confusion that web developers might think that the comment also applies to functions before it.
+
+### Concatenability of JavaScript files with per-function comments
+
+We want to design the per-function magic comment so that the following property holds: If you concatenate multiple JavaScript files which have their own per-function magic comments, the result will be a JavaScript file with valid per-function magic comments, and the same functions will be marked for eager compilation as would be in individual files. This makes it easier for tools to process JavaScript files which contain the per-function magic comment.
+
+This property is achieved by making the per-function magic comment encode function positions relative to the comment end.
 
 ## Alternatives considered
 
