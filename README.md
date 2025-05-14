@@ -193,6 +193,10 @@ Depending on the meaning of "more important", the browser could then compile "mo
 
 This area needs more experimentation and is left as a possible future extension.
 
+## Format for the per-function magic comment
+
+The exact format of the per-function magic comment is under active development. The initial approach will be to encode a list of function positions, where each position is relative to the comment end.
+
 ## Alternatives considered
 
 ### Alternative: Top-level "use eager" directive and per-function "use eager" directive
